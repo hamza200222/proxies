@@ -1,0 +1,35 @@
+import requests
+from requests.exceptions import ConnectionError, Timeout
+
+def check_proxy(proxy):
+    url = "http://www.google.com"  # You can change this to any URL you prefer
+
+    proxies = {
+        "http": proxy,
+        "https": proxy,
+    }
+
+    try:
+        response = requests.get(url, proxies=proxies, timeout=10)
+        return response.status_code == 200
+    except (ConnectionError, Timeout):
+        return False
+
+def main(input_file, output_file):
+    with open(input_file, 'r') as file:
+        proxies = [line.strip() for line in file.readlines()]
+
+    working_proxies = []
+
+    for proxy in proxies:
+        if check_proxy(proxy):
+            working_proxies.append(proxy)
+
+    with open(output_file, 'w') as file:
+        file.write("\n".join(working_proxies))
+
+if __name__ == "__main__":
+    input_file = input("Enter the path to the input file: ")
+    output_file = "working.txt"  # You can change the output file name if needed
+    main(input_file, output_file)
+    print(f"Working proxies written to {output_file}")
