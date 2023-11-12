@@ -18,19 +18,12 @@ def check_proxy(proxy):
         print(f"{proxy} is not working.")
         return False
 
-def main(input_file, output_file):
+def main(input_file):
     with open(input_file, 'r') as file:
-        proxies = [line.strip() for line in file.readlines()]
-
-    working_proxies = []
-
-    for proxy in proxies:
-        if check_proxy(proxy):
-            working_proxies.append(proxy)
-
-    print("\nWorking Proxies:")
-    print("\n".join(working_proxies))
+        for line in file:
+            proxy = line.strip()
+            check_proxy(proxy)
 
 if __name__ == "__main__":
     input_file = input("Enter the path to the input file: ")
-    main(input_file, None)
+    main(input_file)
